@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random NFL Teams</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+
+        #wheel-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            margin: 60px auto;
+        }
+
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 10px solid #ffd700;
+            position: relative;
+            background: white;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            transform-origin: center center;
+        }
+
+        .name-section {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform-origin: center;
+        }
+
+        .name-label {
+            position: absolute;
+            left: 50%;
+            top: 12%;
+            transform-origin: center;
+            white-space: nowrap;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: #ffd700;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .wheel-marker {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: #ffd700;
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            z-index: 3;
+        }
+
+        #spinButton {
+            padding: 15px 40px;
+            font-size: 20px;
+            cursor: pointer;
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            color: #333;
+            border: none;
+            border-radius: 25px;
+            margin-top: 30px;
+            transition: all 0.3s;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #spinButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        #spinButton:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+    <h1>🎉 Random NFL Teams 🎉</h1>
+
+    <div id="wheel-container">
+        <div class="wheel-marker"></div>
+        <div id="wheel">
+            <div class="wheel-center"></div>
+        </div>
+    </div>
+    <button id="spinButton">Spin</button>
+
+    <script>
+         let names = [
+             "Nguyễn Trường An",
+             "Đỗ Thị Quỳnh Anh",
+             "Ngô Tuấn Anh",
+             "Nguyễn Đức Anh",
+             "Nguyễn Phùng Anh",
+             "Nguyễn Việt Anh",
+             "Trương Kỳ Anh",
+             "Trần Thị Bé",
+             "Đỗ Xuân Chiến",
+             "Trần Thành Công",
+             "Nguyễn Hùng Cường",
+             "Nguyễn Đình Dũng",
+             "Đào Trọng Duy",
+             "Lê Đức Duy",
+             "Hoàng Minh Dương",
+             "Nguyễn Thiên Dương",
+             "Lê Anh Đức",
+             "Nguyễn Đình Giang",
+             "Phạm Bảo Giang",
+             "Lê Đức Hà",
+             "Lê Văn Hà",
+             "Đỗ Tiến Hải",
+             "Trần Tiến Hải",
+             "Trần Trung Hậu",
+             "Nguyễn Thị Hiệp",
+             "Nguyễn Tuấn Hiệp",
+             "Lê Đức Hoàng",
+             "Nguyễn Văn Hoàng",
+             "Trần Huy Hoàng",
+             "Trần Việt Hoàng",
+             "Võ Mạnh Hùng",
+             "Nguyễn Quang Huy",
+             "Trịnh Quang Huy",
+             "Nguyễn Việt Hưng",
+             "Nguyễn Thị Hường",
+             "Cao Bá Hướng",
+             "Phạm Đức Khải",
+             "Phan Xuân Khiêm",
+             "Phan Đức Lãm",
+             "Trương Ngọc Lâm",
+             "Nguyễn Thị Liêm",
+             "Trần Duy Linh",
+             "Phan Đình Lực",
+             "Hà Thị Ngọc Mai",
+             "Phạm Xuân Mạnh",
+             "Nguyễn Bình Minh",
+             "Phạm Quang Minh",
+             "Lê Quang Nghĩa",
+             "Bùi Trung Nguyên",
+             "Lương Thị Hồng Nhung",
+             "Phạm Hữu Phước",
+             "Hoàng Thu Phượng",
+             "Nguyễn Việt Quang",
+             "Lê Anh Quân",
+             "Mai Văn Quân",
+             "Nguyễn Hoàng Sang",
+             "Vũ Hải Sơn",
+             "Lê Ký Sự",
+             "Trần Đức Tài",
+             "Lù Văn Thái",
+             "Nguyễn Văn Thành",
+             "Nguyễn Chiến Thắng",
+             "Nguyễn Đức Thắng",
+             "Lê Thị Trang",
+             "Vũ Đức Trường",
+             "Hoàng Anh Tú",
+             "Nguyễn Xuân Tuệ",
+             "Nguyễn Đức Việt",
+             "Phan Văn Hoàng Việt",
+             "Bùi Quang Vinh",
+             "Hoàng Hải Yến"
+         ];
+
+        let winners = [
+            "Nguyễn Đình Dũng",
+            "Trương Kỳ Anh",
+            "Phan Xuân Khiêm",
+            "Hoàng Anh Tú",
+            "Hà Thị Ngọc Mai",
+            "Vũ Đức Trường",
+            "Nguyễn Việt Hưng",
+            "Lê Đức Hà"
+        ];
+		
+        const wheel = document.getElementById("wheel");
+        let isSpinning = false;
+
+        function createWheel() {
+            const anglePerSection = 360 / names.length;
+
+            names.forEach((name, index) => {
+                const section = document.createElement('div');
+                section.className = 'name-section';
+                section.style.transform = `rotate(${index * anglePerSection}deg)`;
+
+                const nameLabel = document.createElement('div');
+                nameLabel.className = 'name-label';
+                nameLabel.textContent = name;
+                nameLabel.style.transform = `translateX(-50%) rotate(${90 - anglePerSection / 2}deg)`;
+
+                section.appendChild(nameLabel);
+                wheel.appendChild(section);
+            });
+        }
+
+        createWheel();
+
+    let spinSpeed = 5; // Tốc độ quay ban đầu (giây)
+
+    function resetWheel() {
+        wheel.style.transition = "none"; // Xóa hiệu ứng quay cũ
+        wheel.style.transform = "rotate(0deg)"; // Đặt lại góc quay về 0
+        
+        while (wheel.firstChild) {
+            wheel.removeChild(wheel.firstChild); // Xóa tất cả các phần tử trên bánh xe
+        }
+        
+        createWheel(); // Tạo lại bánh xe mới
+        
+        spinSpeed = Math.max(2, spinSpeed * 0.9); // Giảm thời gian quay để tăng tốc (tối thiểu 2s)
+    }
+
+    document.getElementById("spinButton").addEventListener("click", function() {
+        if (isSpinning) return;
+        isSpinning = true;
+        this.disabled = true;
+        this.style.opacity = "0.5";
+
+        const winnerIndex = Math.floor(Math.random() * winners.length);
+        const winnerName = winners[winnerIndex];
+        
+        const anglePerSection = 360 / names.length;
+        const stopIndex = names.indexOf(winnerName);
+        const stopAngle = 360 - (stopIndex * anglePerSection);
+        const totalRotation = (360 * 4) + (360 * 15) + stopAngle;
+        
+        wheel.style.transition = `transform ${spinSpeed}s cubic-bezier(0.25, 1, 0.5, 1)`; // Giảm tốc khi chuẩn bị dừng
+        wheel.style.transform = `rotate(${totalRotation}deg)`;
+
+        setTimeout(() => {
+            isSpinning = false;
+            this.disabled = false;
+            this.style.opacity = "1";
+            alert(`🎉 Chúc mừng! Người trúng thưởng: ${winnerName} 🎉`);
+            names.splice(stopIndex, 1);
+            winners.splice(winnerIndex, 1);
+            resetWheel();
+        }, spinSpeed * 1000);
+    });
+    </script>
+</body>
+</html>
